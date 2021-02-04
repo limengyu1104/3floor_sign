@@ -1,6 +1,7 @@
 import requests
+import hashlib
+import sys
 import json
-import os
 from bs4 import BeautifulSoup
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # 禁用安全请求警告
