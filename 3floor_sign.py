@@ -16,20 +16,28 @@ webhook = os.environ["dingding"]
 notice = os.environ["notice"]
 #手机号或邮箱
 username = os.environ["username"]
-#密码MD5 32位(小写)
+#密码明文
 password = os.environ["password"]
 
 global content  #设置一个全局参数存储打印信息
 contents = ''
 
-#输出方式
 def output(content):
     global contents
     contents += '  \n' + str(content)
     print(content)
 
-#登录
+
+def md5(password):
+    m = hashlib.md5()
+    b = password.encode(encoding='utf-8')
+    m.update(b)
+    password_md5 = m.hexdigest()
+    return password_md5
+
+
 def login():
+    password_md5 = md5(password)
     url = 'http://floor.huluxia.com/account/login/ANDROID/4.0?device_code=1'
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -37,7 +45,7 @@ def login():
     data = {
         'account': username,
         'login_type': '2',
-        'password': password,
+        'password': password_md5,
     }
     response = requests.post(url=url, data=data, headers=headers, verify=False)
     key = json.loads(response.text)['_key']
@@ -47,7 +55,7 @@ def login():
     #output(key)
     return userID, key
 
-#查询用户信息
+
 def get_level(userID, key):
     url = 'http://floor.huluxia.com/view/level?viewUserID={userID}&_key={key}'.format(
         userID=userID, key=key)
@@ -57,7 +65,7 @@ def get_level(userID, key):
     output('[+]当前经验值:' + level[0].string)
     output('[+]距离下一等级:' + level[1].string + '还需:' + level[2].string + '经验')
 
-#签到
+
 def sign(key):
     url = 'https://floor.huluxia.com/category/list/ANDROID/2.0'
     response = requests.get(url=url, verify=False)
@@ -112,24 +120,26 @@ def main():
         value = login()
     except Exception:
         print('[+]登录失败，请检测账号密码')
+        sys.exit()
     get_level(value[0], value[1])
     output('---结束【登录，查询用户信息】---\n')
 
     output('---开始【签到】---')
     sign(value[1])
     output('---结束【签到】---')
-    if notice == '0':
+    if notice == 0:
         try:
             dingtalk()
         except Exception:
             print('[+]请检查钉钉配置是否正确')
-    elif notice == '1':
+    elif notice == 1:
         try:
             server()
         except Exception:
             print('[+]请检查server酱配置是否正确')
     else:
         print('[+]选择不推送信息')
+
 
 def main_handler(event, context):
     return main()
