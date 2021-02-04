@@ -129,12 +129,12 @@ def main():
     output('---开始【签到】---')
     sign(value[1])
     output('---结束【签到】---')
-    if notice == 0:
+    if notice == '0':
         try:
             dingtalk()
         except Exception:
             print('[+]请检查钉钉配置是否正确')
-    elif notice == 1:
+    elif notice == '1':
         try:
             server()
         except Exception:
