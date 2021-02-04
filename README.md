@@ -11,6 +11,7 @@
 Action secrets 需要填的参数为：
 1.  username（明文）
 2.  password（明文）
-2.  SCKEY和webhook选填或不填
-3.  notice为推送方式（钉钉或server酱），0=dingding 1=weixin 其他数字为不推送，或者不填
+2.  SCKEY（选填）
+4.  dingding（选填）
+3.  notice （选填）推送方式（0=dingding 1=weixin 其他数字为不推送，或者不填
 
