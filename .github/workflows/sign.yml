@@ -28,7 +28,7 @@ jobs:
       - name: '运行签到脚本'  
         run: python3 3floor_sign.py 
         env:
-            username: ${{ secrets.昵称181186 }}
+            username: ${{ secrets.13134665604 }}
             password: ${{ secrets.a13134665604b }}
             dingding: ${{ secrets.dingding }}
             SCKEY:   ${{ secrets.SCKEY }}
